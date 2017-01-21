@@ -118,3 +118,7 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.intl-tel-input{
+    display: block!important;
+}

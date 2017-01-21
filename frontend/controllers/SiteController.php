@@ -7,7 +7,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -26,7 +26,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'hello'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -34,7 +34,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'hello'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -88,7 +88,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect('hello');
         } else {
             return $this->render('login', [
                 'model' => $model,
@@ -142,6 +142,19 @@ class SiteController extends Controller
     }
 
     /**
+     * Displays hello page.
+     *
+     * @return mixed
+     */
+    public function actionHello()
+    {
+        return $this->render('hello',[
+            'username'=>Yii::$app->user->identity->user_name
+        ]);
+    }
+
+
+    /**
      * Signs user up.
      *
      * @return mixed
@@ -152,7 +165,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
+                    return $this->redirect('hello');
                 }
             }
         }
