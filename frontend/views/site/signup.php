@@ -66,6 +66,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'interest')->textarea()?>
 
+                <?= $form->field($model, 'captcha')->widget(\yii\captcha\Captcha::classname(), [
+                    // configure additional widget properties here
+                ])->label(false) ?>
+
 
             <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

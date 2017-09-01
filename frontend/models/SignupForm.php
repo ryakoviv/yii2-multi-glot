@@ -28,6 +28,7 @@ class SignupForm extends Model
     public $password;
     public $password_repeat;
     public $role;
+    public $captcha;
 
     /**
      * @inheritdoc
@@ -79,6 +80,7 @@ class SignupForm extends Model
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
             ['password_repeat', 'required'],
+            ['captcha', 'captcha'],
             ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match" ],
         ];
     }

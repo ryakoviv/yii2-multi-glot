@@ -72,11 +72,16 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Implemented for Oauth2 Interface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        /** @var \filsh\yii2\oauth2server\Module $module */
+        $module = Yii::$app->getModule('oauth2');
+        $token = $module->getServer()->getResourceController()->getToken();
+        return !empty($token['user_id'])
+            ? static::findIdentity($token['user_id'])
+            : null;
     }
 
     /**
